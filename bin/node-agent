@@ -30,7 +30,7 @@ var constants = require('../lib/constants');
 var convert   = require('../lib/util/convert');
 var CLI       = require('../lib/CLI');
 
-var TarsConfigure = require('@tars/config-parser');
+var TarsConfigure = require('@tars/utils').Config;
 
 var split = function(val) {
 	return val.split(' ');
