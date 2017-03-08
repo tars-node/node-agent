@@ -7,13 +7,13 @@
     "name": "Superzheng",
     "email": "superzheng@tencent.com"
   },
-  "homepage": "http://git.oa.com/taf/node-agent",
+  "homepage": "https://github.com/tars-node/node-agent",
   "repository": {
     "type": "git",
-    "url": "http://git.code.oa.com/taf/node-agent.git"
+    "url": "https://github.com/tars-node/node-agent.git"
   },
   "bugs": {
-    "url": "http://git.oa.com/taf/node-agent/issues"
+    "url": "https://github.com/tars-node/node-agent/issues"
   },
   "keywords": [
     "node-agent",
