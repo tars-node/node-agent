@@ -433,6 +433,6 @@ __我们强烈建议您：在任何情况下，请完成所有初始化操作后
 
 ## 架构
 
-![PM2](http://git.code.oa.com/tars/node-agent/raw/master/doc/architecture.png)
+![PM2](https://github.com/tars-node/node-agent/blob/master/doc/architecture.png?raw=true)
 
 `node-agent` 在启动（也就是执行 `cluster.fork`）服务脚本时，并不会直接载入对应脚本，而是载入 `node-agent/ProcessContainer.js` 来对服务脚本进行包装，之后再调用系统的 `require` 载入执行脚本
