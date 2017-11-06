@@ -106,6 +106,9 @@ var parseConfig = function(script, file) {
 		org : 'instances',
 		coercion : instancesParse
 	}, {
+		org : 'env',
+		coercion : jsonParse
+	}, {
 		org : 'script-args',
 		coercion : split
 	}, {
