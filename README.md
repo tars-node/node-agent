@@ -353,7 +353,7 @@ __请注意：您在处理完该事件后，请一定显示调用 `process.exit(
 
 `node-agent` 会将服务的输出（`stdout|stderr` 管道以及 `console` 模块的输出）重定向到指定的文件（当使用 `-l --log` 参数启动时）或者管道。
 
-日志的输出由 [winston-tars](http://git.code.oa.com/tars/winston-tars "winston-tars") 模块实现，其输出的日志格式为：`日期 时间|PID|日志级别|文件名:行号|内容`
+日志的输出由 [winston-tars](https://github.com/tars-node/winston-tars "winston-tars") 模块实现，其输出的日志格式为：`日期 时间|PID|日志级别|文件名:行号|内容`
 
 服务脚本可以通过 `node` 自带的 `console` 模块输出不同级别的日志。
 
@@ -396,9 +396,9 @@ __请注意：环境变量全为 String 类型__
 
 * HTTP(s)
 	* 服务端：[response.statusCode >= 400](http://www.nodejs.org/api/http.html#http_response_statuscode) 为失败，所有请求的超时为 0
-		* 可通过 [--tars-monitor-http-threshold](http://git.code.oa.com/tars/node-agent#tars-monitor-http-threshold) 与 [--tars-monitor-http-seppath](http://git.code.oa.com/tars/node-agent#tars-monitor-http-seppath) 进行配置
+		* 可通过 [--tars-monitor-http-threshold](#tars-monitor-http-threshold) 与 [--tars-monitor-http-seppath](#tars-monitor-http-seppath) 进行配置
 
-更多详情您可访问 [@tars/monitor.stat](http://git.code.oa.com/tars/monitor/tree/master#stat) 获取。
+更多详情您可访问 [@tars/monitor.stat](https://github.com/tars-node/monitor#stat) 获取。
 
 ### 用量信息
 
