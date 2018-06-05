@@ -398,7 +398,7 @@ __请注意：环境变量全为 String 类型__
 	* 服务端：[response.statusCode >= 400](http://www.nodejs.org/api/http.html#http_response_statuscode) 为失败，所有请求的超时为 0
 		* 可通过 [--tars-monitor-http-threshold](#tars-monitor-http-threshold) 与 [--tars-monitor-http-seppath](#tars-monitor-http-seppath) 进行配置
 
-更多详情您可访问 [@tars/monitor.stat](https://github.com/tars-node/monitor#stat) 获取。
+更多详情您可访问 [@tars/monitor.stat](https://github.com/tars-node/monitor) 获取。
 
 ### 用量信息
 
