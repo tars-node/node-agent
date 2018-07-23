@@ -92,6 +92,9 @@
 >   --tars-monitor <tars_monitor>                  enable or disable service monitor running in tars platform, and the default value is on  
 >   --tars-monitor-http-threshold <http_threshold> if the http(s) status code is large than the preseted threshold then this request will be considered error. default threshold is 400, set it "off" to disabled  
 >   --tars-monitor-http-seppath <http_seppath>     separate url pathname as interface name, default is on  
+>   --tars-monitor-http-socketerr <http_socketerr> considered socket error as error, default is on  
+>   --long-stack <long_stack>                      enable long stack trace to auto append asynchronous stack, default is off  
+>   --long-stack-filter-usercode <stack_usercode>  filter long stack trace keep user module code only, default is off  
 
 ### -c, --config
 
@@ -269,6 +272,24 @@ HTTP(s) 服务在上报时是否需要区分不同路径。
 
 具体详情可查看 `监控与用量上报` 节。
 
+### --tars-monitor-http-socketerr
+
+在默认情况下，HTTP(s) 服务在进行上报时会将 [Socket 异常](https://nodejs.org/api/errors.html#errors_common_system_errors) 作为异常访问。
+
+如您想关闭此特性，可设置成为 off
+
+### --long-stack, --long-stack-filter-usercode
+
+开启此特性后，会在异常产生时自动附加异步调用堆栈，帮助快速定位异步调用问题。
+
+如您想过滤出用户代码（模块）所产生的堆栈，可以开启 `--long-stack-filter-usercode` 。
+
+此特性要求 Node.js 版本需大于 v8.2.x
+
+__此特性会造成性能损耗，性能敏感代码请勿开启。__
+
+具体详情可查看 [LongStack](https://www.npmjs.com/package/longstack) 说明。
+
 ## 配置
 
 `node-agent` 支持以多种配置方式进行启动：
@@ -346,8 +367,24 @@ __请注意：您在处理完该事件后，请一定显示调用 `process.exit(
 * tars.setloglevel ： `INFO`、`DEBUG`、`WARN`、`ERROR`、`NONE`
 * tars.loadconfig ： 配置文件名
 * 自定义命令
+* process.msg:[all|worker_id]  ： 跨进程自定义消息对象
 
 \* `node-agent` 会对 `自定义命令` 进行切分，命令中第一个空格前的字符作为 `cmd`，而后续的部分则作为 `data`
+
+### process.send(object)
+
+发送命令给主进程以便主进程执行特定的操作。
+
+传递的消息 `object` 的格式与收到的消息格式相同。
+
+#### cmd = process.msg:[all|worker_id]
+
+通过此命令，可以将自定义消息发送给参数指定的子进程。
+
+* all ： 发送给所有子进程（包括自己）
+* worker_id ： 发送给特定的子进程，其中 worker_id 为 `进程顺序 ID` (process.env.WORKER_ID)
+
+__所有消息均会通过主进程中转，在大消息量下主进程易成为性能瓶颈，请谨慎使用！__
 
 ## 日志
 

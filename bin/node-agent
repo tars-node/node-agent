@@ -156,6 +156,15 @@ var parseConfig = function(script, file) {
 	}, {
 		org : 'tars-monitor-http-seppath',
 		coercion : toBoolean
+	}, {
+		org : 'tars-monitor-http-socketerr',
+		coercion : toBoolean
+	}, {
+		org : 'long-stack',
+		coercion : toBoolean
+	}, {
+		org : 'long-stack-filter-usercode',
+		coercion : toBoolean
 	}].forEach(function(item) {
 		var value = (serverObj[item.domain || 'server'] || {})[item.org || item];
 	 	if (value) {
@@ -222,6 +231,9 @@ commander
 	.option('--tars-monitor <tars_monitor>', util.format('enable or disable service monitor running in tars platform, and the default value is %s', constants.TARS_MONITOR ? 'on' : 'off'), toBoolean)
 	.option('--tars-monitor-http-threshold <http_threshold>', util.format('if the http(s) status code is large than the preseted threshold then this request will be considered error. default threshold is %s, set it "off" to disabled', constants.TARS_MONITOR_HTTP_THRESHOLD), aliveParse)
 	.option('--tars-monitor-http-seppath <http_seppath>', util.format('separate url pathname as interface name, default is %s', constants.TARS_MONITOR_HTTP_SEPPATH ? 'on' : 'off'), toBoolean)
+	.option('--tars-monitor-http-socketerr <http_socketerr>', util.format('considered socket error as error, default is %s', constants.TARS_MONITOR_HTTP_SOCKETERR ? 'on' : 'off'), toBoolean)
+	.option('--long-stack <long_stack>', util.format('enable long stack trace to auto append asynchronous stack, default is %s', constants.LONG_STACK ? 'on' : 'off'), toBoolean)
+	.option('--long-stack-filter-usercode <stack_usercode>', util.format('filter long stack trace keep user module code only, default is %s', constants.LONG_STACK_FILTER_USERCODE ? 'on' : 'off'), toBoolean)
 	.usage('app.js [options]')
 	.parse(process.argv);
 
