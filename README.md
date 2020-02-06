@@ -1,68 +1,68 @@
-# @tars/node-agent
+# @ tars / node-agent
 
-为了让 Node.js 应用可以运行于 TARS 框架中， `node-agent` 将作为启动器来启动应用，提供生产环境所需的服务特性。
+In order for Node.js applications to run in the TARS framework, `node-agent` will be used as a launcher to launch the application and provide the service features required by the production environment.
 
-它主要提供了如下的功能：
+It mainly provides the following functions:
 
-* __内置负载均衡（通过 Cluster 模块实现）__  
-* __异常退出的监控与拉起__  
-* __日志搜集与处理__  
-* __支持TARS平台的管理命令__  
-* __支持 HTTP(s) 服务监控上报（在 TARS 平台上运行）__
-* __支持服务用量上报（在 TARS 平台上运行）__
+* __Built-in load balancing (implemented through the Cluster module) __
+* __Monitoring and Pulling of Abnormal Exit__
+* __Log collection and processing__
+* __Supports management commands for the TARS platform__
+* __Support HTTP (s) service monitoring and reporting (running on TARS platform) __
+* __Support service usage report (run on TARS platform) __
 
-## 安装
+## Installation
 
-`npm install @tars/node-agent -g`  
+`npm install @ tars / node-agent -g`
 
-> 由于 `node-agent` 是一个 CLI 程序，所以一般需要使用 __-g__ 参数来安装
+> Since `node-agent` is a CLI program, it usually needs to be installed with the __- g__ parameter
 
-## 用法
+## Usage
 
-`node-agent app.js [options]`  
+`node-agent app.js [options]`
 
-* app.js 为程序的入口脚本，详见 [入口点](#entrypoint) 节
-* [options] 可选配置，详见 [选项](#options) 节
+* app.js is the entry script for the program, see [entry point] (# entrypoint) for details
+* [options] Optional configuration, see [Options] (# options) section
 
-## 例子
+## Examples
 
-执行 app.js 文件：
-> $ node-agent app.js
+Execute the app.js file:
+$ node-agent app.js
 
-以 `TARS` 服务的配置文件来启动：
-> $ node-agent app.js --config MTT.Test.conf
+Start with the configuration file for the `TARS` service:
+$ node-agent app.js --config MTT.Test.conf
 
-启动并命名应用为 MTT.Test：
-> $ node-agent app.js --name MTT.Test
+Launch and name the app MTT.Test:
+$ node-agent app.js --name MTT.Test
 
-定义日志输出路径
-> $ node-agent app.js --log ./logs/
+Define log output path
+$ node-agent app.js --log ./logs/
 
-传递子进程 `node` 的启动参数：
-> $ node-agent app.js --node-args="--debug=7001"
+Pass the startup parameters of the child node `node`:
+> $ node-agent app.js --node-args = "-debug = 7001"
 
-定义子进程数量：
-> $ node-agent app.js -i 4
+Define the number of child processes:
+$ node-agent app.js -i 4
 
-## 入口点
+## Entry point
 
-`node-agent` 启动时传入的第二个参数用来指定服务脚本执行的入口点文件，其中：
+The second parameter passed when `node-agent` starts is used to specify the entry point file for service script execution, where:
 
- * 可以直接传入脚本文件用于执行，如 `./app.js` 
+ * Can be directly passed into the script file for execution, such as `. / App.js`
 
- * 也可以传入脚本文件所在的目录，如 `./`
+ * You can also pass in the directory where the script file is located, such as `. /`
 
-当传入的为目录时，入口点根据如下顺序进行确认：
+When a directory is passed in, the entry point is confirmed in the following order:
 
-1. 目录中存在 `package.json` 文件，则：
-	1. 查找 `nodeAgent.main`
-	2. 查找 `script.start`（此配置节需要以 `node` 打头才可识别）
-	3. 查找 `main` 
-2. 查找目录中是否存在： `server.js`、`app.js`、`start.js`、`index.js`
+1. The `package.json` file exists in the directory, then:
+1. Find `nodeAgent.main`
+2. Find `script.start` (this configuration section needs to start with` node` to recognize)
+3. Find `main`
+2. Find if it exists in the directory: `server.js`,` app.js`, `start.js`,` index.js`
 
-只要其中的一项匹配则作为入口点文件来执行，并不再往下匹配。
+As long as one of these matches is executed as an entry point file, no further matching is performed.
 
-## 选项
+## options
 
 
 > Options:
@@ -98,378 +98,378 @@
 
 ### -c, --config
 
-如果此服务为 TARS 服务，可在此指定服务的配置文件。
+If this service is a TARS service, you can specify the service's profile here.
 
-配置文件将会自动读入作为基础配置，通过设置其他的配置参数可覆盖读入的基础配置。
+The configuration file will be automatically read in as the basic configuration. You can override the imported basic configuration by setting other configuration parameters.
 
 ### -n, --name
 
-可在此指定服务名。
+You can specify the service name here.
 
-* 如未配置，则使用 _脚本的文件名_
-* 如为 TARS 服务，则服务名必须为 _app.serverName_ 格式
+* If not configured, use _script filename_
+* For TARS service, the service name must be in the format _app.serverName_
 
 ### -l, --log
 
-指定输出的日志文件根目录
+Specify the root directory of the output log file
 
-如未配置，则所有日志输出采用 _stdout/stderr_ 输出
+If not configured, all log output is _stdout / stderr_ output
 
 ### -i, --instances
 
-`node-agent` 采用 Node.js 原生的 [Cluster](http://www.nodejs.org/api/cluster.html "Cluster") 模块来实现负载均衡。
+`node-agent` uses Node.js' native [Cluster] (http://www.nodejs.org/api/cluster.html" Cluster ") module to implement load balancing.
 
-可在此配置 `node-agent` 启动的子进程（业务进程）数量：
+The number of child processes (business processes) started by `node-agent` can be configured here:
 
-* 未配置（或配置为 `auto`、`0`），启动的子进程数量等于 `CPU 物理核心` 个数。
+* Not configured (or configured as `auto`,` 0`), the number of child processes started is equal to the `CPU physical core` number.
 
-* 配置为 `max`，启动的子进程数量等于 CPU 个数（所有核心数）。
+* Configured as `max`, the number of child processes started equals the number of CPUs (all cores).
 
-如果 `node-agent` 是由 `tarsnode` 启动的，会自动读取TARS配置文件中的 `tars.application.client.asyncthread` 配置节。
+If `node-agent` is started by` tarsnode`, the `tars.application.client.asyncthread` configuration section in the TARS configuration file is automatically read.
 
-也可通过 `TARS平台 -> 编辑服务 -> 异步线程数` 进行调整。
+It can also be adjusted via `TARS Platform-> Edit Services-> Number of Asynchronous Threads`.
 
 ### --env
 
-设置服务启动时的 _环境变量_ ， 这里需要使用 `JSON` 格式进行描述
+Set the _environment variable_ when the service is started, which needs to be described in `JSON` format
 
-例如：可以通过这个配置来传入当前的运行环境（开发、生产）
+For example: this configuration can be passed into the current operating environment (development, production)
 
-``` js
-{\"NODE_ENV\":\"production\"}
-``` 
+`` `js
+{\ "NODE_ENV \": \ "production \"}
+`` `
 
-__请注意：当作为命令行参数传递时，这里的双引号（"）需要进行转义（\"）__
+__Please note: When passed as a command line parameter, the double quotes (") need to be escaped (\") __
 
-如果此服务为 TARS 服务，则此参数以 `tarsnode` 可识别的方式读取并设置。
+If the service is a TARS service, this parameter is read and set in a way that `tarsnode` recognizes.
 
 ### --http-address
 
-设定服务脚本执行所需的 `ip:port`
+Set the ip: port required for service script execution
 
-在脚本中可以使用环境变量 `HTTP_IP`（`IP`）、`HTTP_PORT`（`PORT`） 进行获取
+You can use the environment variables `HTTP_IP` (` IP`), `HTTP_PORT` (` PORT`) in the script to obtain
 
-``` js
+`` `js
 process.env.HTTP_IP
 process.env.HTTP_PORT
-```
+`` `
 
-如果此服务为 TARS 服务，则这里的值为配置文件中，第一个非TARS协议的 Servant 指明的 `ip:port`
+If this service is a TARS service, the value here is the `ip: port` specified in the configuration file by the first non-TARS Servant
 
 ### --script-args
 
-设置服务脚本执行所需传入的参数
+Set the parameters required for service script execution
 
-例如：
+E.g:
 
-> $ node-agent app.js --script-args="--use="https"
+> $ node-agent app.js --script-args = "-use =" https "
 
-等同于
+Equivalent to
 
-> $ node app.js --use="https"
+> $ node app.js --use = "https"
 
 ### --node-args
 
-设置 `node cluster` 子进程所需的启动参数
+Set the startup parameters required by the node cluster child process
 
-例如：
+E.g:
 
-> $ node-agent app.js --node-args="--debug=7001 --trace-deprecation"
+> $ node-agent app.js --node-args = "-debug = 7001 --trace-deprecation"
 
-等同于
+Equivalent to
 
-> $ node --debug=7001 --trace-deprecation app.js
+$ node --debug = 7001 --trace-deprecation app.js
 
 ### --run-as-user, --run-as-group
 
-指定 `node cluster` 子进程运行的用户（组）
+Specify the user (group) for the `node cluster` child process
 
-可通过此对服务脚本进行降权执行，如未配置权限等同于 `node-agent` 启动用户（组）
+This can be used to downgrade the service script. If the permission is not configured, it is equivalent to `node-agent`.
 
 ### --max-memory-restart
 
-指定服务所能使用到的最大内存。
+Specifies the maximum memory that can be used by the service.
 
-如果子进程达到最大内存限制，将会抛出异常并退出。此 _（资源形）_ 异常 也会纳入整体的异常进行处理。
+If the child process reaches the maximum memory limit, it will throw an exception and exit. This _ (resource-shaped) _ exception is also handled as an overall exception.
 
 ### --graceful-shutdown
 
-正常情况下，`node-agent` 在停止服务（进程）时会通过 `worker.disconnect()` 通知服务，让服务释放资源并退出。
+Normally, `node-agent` will notify the service via` worker.disconnect () `when stopping the service (process), and let the service release resources and exit.
 
-在这里可以设置超时时间，如果服务（进程）在给定的时间后仍然没有退出，`node-agent` 则会强制 `kill` 掉进程。
+You can set the timeout here. If the service (process) does not exit after a given time, `node-agent` will force` kill` to kill the process.
 
-超时时间默认为 8 秒
+Timeout is 8 seconds by default
 
-如果 `node-agent` 是由 `tarsnode` 启动的，会自动读取TARS配置文件中的 `tars.application.server.deactivating-timeout` 配置节。
+If `node-agent` is started by` tarsnode`, the `tars.application.server.deactivating-timeout` configuration section in the TARS configuration file is automatically read.
 
 ### --exception-max, --exception-time
 
-如果（服务）子进程出现异常退出，并在一段时间内 _（--exception-time）_ 异常退出的次数没有超过最大值 _（--exception-max）_ 。`node-agent` 将会自动拉起新的（服务）子进程，否则 `node-agent` 与服务也将异常退出。
+If the (service) child process exits abnormally, and within a period of time _ (-exception-time) _ The number of abnormal exits does not exceed the maximum value _ (-exception-max) _. `node-agent` will automatically start a new (service) child process, otherwise` node-agent` and the service will also exit abnormally.
 
-以方便第三方管理工具对服务状态进行监控
+To facilitate third-party management tools to monitor service status
 
---exception-time 默认值为 10s  
---exception-max 默认值为 2次
+--exception-time default is 10s
+--exception-max default is 2
 
 ### --keepalive-time
 
-如果 `node-agent` 在一段时间（--keepalive-time）内未收到（服务）子进程发送的心跳，则判定此（服务）子进程为僵尸进程（zombie process），将会直接杀死 `kill`，并作为异常进行处理。
+If `node-agent` does not receive the heartbeat sent by the (service) child process within a period of time (--keepalive-time), then this (service) child process is determined to be a zombie process and will directly kill `kill` and handle it as an exception.
 
-_当服务器 `可用内存` 过小时不触发此逻辑。_
+_This logic is not triggered when the server `Free Memory` is too small. _
 
-__如果您想对服务脚本进行（断点）调试，这需将此设置成为 `--keepalive-time=off`__
+__If you want to (breakpoint) debug the service script, you need to set this to `--keepalive-time = off`__
 
-其默认值为 5m
+Its default value is 5m
 
-### --applog-max-files, --applog-max-size， --applog-level
+### --applog-max-files, --applog-max-size, --applog-level
 
-指定服务默认的滚动 日志大小 _（--applog-max-size）_ 、 总数 _（--applog-max-files）_ 与 日志级别 _（--applog-level）_ 。
+Specify the service's default rolling log size _ (-applog-max-size) _, total _ (-applog-max-files) _ and log level _ (-applog-level) _.
 
-服务的启动时会创建两份主（滚动）日志：
+Two main (rolling) logs are created when the service starts:
 
-* app.serverName.log： 所启动服务的 `stdout/stderr/console` 
-* app.serverName_agent.log： `node-agent` 的状态信息
+* app.serverName.log: `stdout / stderr / console` of the service started
+* app.serverName_agent.log: status information of `node-agent`
 
-这个配置主要影响上面两份主（滚动）日志的输出参数
+This configuration mainly affects the output parameters of the above two main (rolling) logs
 
-详见 [日志](#logs "logs") 节
+See [logs] (# logs "logs") for details
 
 ### --tars-node, --tars-local
 
-如果 `node-agent` 是由 `tarsnode` 启动的，则需要指定 `tarsnode` 的 RPC 连接参数 _（--tars-node）_ 与本地被调的启动参数 _（--tars-local）_。
+If `node-agent` is started by` tarsnode`, you need to specify the RPC connection parameter _ (-tars-node) _ of tarsnode and the startup parameter _ (-tars-local) _ which is called locally.
 
-此设置也可通过 TARS配置文件 _（--tars-config）_ 进行指定。
+This setting can also be specified via the TARS configuration file _ (-tars-config) _.
 
-`node-agent` 会在服务启动时向 `tarsnode` 上报服务的版本，并在服务运行过程中发送心跳包。
+`node-agent` will report the service version to` tarsnode` when the service is started, and send heartbeat packets during the service running.
 
-与此同时，`node-agent` 本地启动的（被调）服务也将从 `tarsnode` 中接收下发的消息（shutdown/message），并进行响应。
+At the same time, the (started) service started locally by `node-agent` will also receive the issued messages (shutdown / message) from` tarsnode` and respond.
 
 ### --tars-monitor
 
-如果您的服务是在 `TARS` 平台上运行的，`node-agent` 会自动向 `tarsstat` 上报服务的监控（用量）信息。
+If your service is running on the `TARS` platform,` node-agent` will automatically report service monitoring (usage) information to `tarsstat`.
 
-默认值为 on，设置为 off 可关闭自动上报功能。
+The default value is on, set to off to turn off the automatic report function.
 
-具体详情可查看 `监控与用量上报` 节。
+For details, please refer to the “Monitoring and Usage Reporting” section.
 
 ### --tars-monitor-http-threshold
 
-如果您的服务的 HTTP(s) 返回码大于此阈值则此次请求将作为异常访问进行上报。
+If your service's HTTP (s) return code is greater than this threshold, the request will be reported as an abnormal access.
 
-默认 [response.statusCode >= 400](http://www.nodejs.org/api/http.html#http_response_statuscode) 则为异常访问。
+By default [response.statusCode> = 400] (http://www.nodejs.org/api/http.html#http_response_statuscode) is abnormal access.
 
-设置为 off 可关闭此特性。
+Set to off to turn this feature off.
 
-具体详情可查看 `监控与用量上报` 节。
+For details, please refer to the “Monitoring and Usage Reporting” section.
 
 ### --tars-monitor-http-seppath
 
-HTTP(s) 服务在上报时是否需要区分不同路径。
+Whether the HTTP (s) service needs to distinguish different paths when reporting.
 
-默认为区分路径，其中 url.pathname 的部分会作为服务的接口名进行上报。
+The default is to distinguish between paths. The part of url.pathname will be reported as the interface name of the service.
 
-如果您的服务拥有非常多（大基数）的 pathname（如 RESTful），可设置成为 off。
+If your service has very large (large cardinality) pathnames (such as RESTful), you can set it to off.
 
-具体详情可查看 `监控与用量上报` 节。
+For details, please refer to the “Monitoring and Usage Reporting” section.
 
 ### --tars-monitor-http-socketerr
 
-在默认情况下，HTTP(s) 服务在进行上报时会将 [Socket 异常](https://nodejs.org/api/errors.html#errors_common_system_errors) 作为异常访问。
+By default, the HTTP (s) service accesses [Socket Exception] (https://nodejs.org/api/errors.html#errors_common_system_errors) as an exception when reporting.
 
-如您想关闭此特性，可设置成为 off
+If you want to turn this feature off, you can set it to off
 
 ### --long-stack, --long-stack-filter-usercode
 
-开启此特性后，会在异常产生时自动附加异步调用堆栈，帮助快速定位异步调用问题。
+When this feature is enabled, an asynchronous call stack is automatically attached when an exception occurs, helping to quickly locate asynchronous call problems.
 
-如您想过滤出用户代码（模块）所产生的堆栈，可以开启 `--long-stack-filter-usercode` 。
+If you want to filter out the stack generated by user code (module), you can enable `--long-stack-filter-usercode`.
 
-此特性要求 Node.js 版本需大于 v8.2.x
+This feature requires a Node.js version greater than v8.2.x
 
-__此特性会造成性能损耗，性能敏感代码请勿开启。__
+__This feature will cause performance loss. Do not enable performance sensitive code. __
 
-具体详情可查看 [LongStack](https://www.npmjs.com/package/longstack) 说明。
+For details, please see the [LongStack] (https://www.npmjs.com/package/longstack) description.
 
-## 配置
+## Configuration
 
-`node-agent` 支持以多种配置方式进行启动：
+`node-agent` supports startup in multiple configurations:
 
-* 命令行参数进行指定
-* 在服务脚本的 `package.json` 中指定
-* 在 `TARS` 服务的配置文件中指定
+* Command line parameters are specified
+* Specified in `package.json` of the service script
+* Specified in the configuration file of the `TARS` service
 
-其中：
+among them:
 
-* 在 `package.json` 或  `TARS` 配置文件中指定的值，会覆盖掉命令行参数中所指定的配置项。
-* 可以通过驼峰式写法将配置参数声明在 `package.json` 中 `nodeAgent` 的配置节。
-* 在 `TARS` 服务的配置文件中以配置参数原型直接进行声明
+* The value specified in the `package.json` or` TARS` configuration file will overwrite the configuration items specified in the command line parameters.
+* The configuration parameters can be declared in the configuration section of `nodeAgent` in` package.json` by camel case.
+* Declare directly in the configuration file of the `TARS` service as a configuration parameter prototype
 
-例如（以 nobody 用户启动子进程）：
+For example (start the child process as nobody):
 
-命令行参数：
-> node-agent app.js --run-as-user=nobody
+Command line parameters:
+node-agent app.js --run-as-user = nobody
 
-package.json：
->``` js
->{  
->  "nodeAgent" : {  
->    "runAsUser" : "nobody"  
->  }  
->} 
->```
+package.json:
+`` `js
+> {
+> "nodeAgent": {
+> "runAsUser": "nobody"
+>}
+>}
+> `` `
 
-TARS 配置文件：
->``` xml
-><tars>  
->  <application>  
->    <server>  
->      run-as-user=nobody  
->    </server>  
->  </application>  
-></tars>  
->```
+TARS configuration file:
+`` `xml
+> <tars>
+> <application>
+> <server>
+> run-as-user = nobody
+> </ server>
+> </ application>
+> </ tars>
+> `` `
 
-## 消息与事件
+## Messages and events
 
-一般情况下，用户代码无需处理（关注）进程消息与事件，但如果您想处理（响应）：进程退出、TARS管理命令，则需要进行处理。
+In general, user code does not need to process (follow) process messages and events, but if you want to process (response): process exit, TARS management commands, you need to process.
 
-### process.on('disconnect', function)
+### process.on ('disconnect', function)
 
-关于此事件具体说明请参考 [Cluster Event: 'disconnect'](http://www.nodejs.org/api/cluster.html#cluster_event_disconnect)
+For specific description of this event, please refer to [Cluster Event: 'disconnect'] (http://www.nodejs.org/api/cluster.html#cluster_event_disconnect)
 
-默认情况下 `node-agent` 会对该事件进行处理，但如果用户代码监听（处理）了该事件则 `node-agent` 将不再进行处理。
+By default `node-agent` will process this event, but if user code listens (handles) the event,` node-agent` will no longer process it.
 
-__请注意：您在处理完该事件后，请一定显示调用 `process.exit()` 以确保进程可以正常退出__
+__Please note: After you process the event, please be sure to call `process.exit ()` to ensure that the process can exit normally__
 
-### process.on('message', object)
+### process.on ('message', object)
 
-一旦 `node-agent` 收到了来自于 `tarsnode` 的管理命令，将会通过进程消息发送给业务脚本。
+Once `node-agent` receives the management command from` tarsnode`, it will send the process script to the business script.
 
-传递的消息 `object` 的格式为：
+The format of the passed message `object` is:
 
-```js
+`` `js
 {
-  cmd : String,
-  data : String
+  cmd: String,
+  data: String
 }
-```
+`` `
 
-支持的消息 `cmd` 有：
+Supported messages `cmd` are:
 
-* tars.viewstatus ： 查看服务状态
-* tars.setloglevel ： 设置日志等级
-* tars.loadconfig ： PUSH配置文件
-* tars.connection ： 查看当前链接情况
-* 自定义命令
+* tars.viewstatus: View service status
+* tars.setloglevel: Set the log level
+* tars.loadconfig: PUSH configuration file
+* tars.connection: View the current link situation
+* Custom commands
 
-存在有 `data` 的 `cmd` 有：
+`Cmd` with` data` exists:
 
-* tars.setloglevel ： `INFO`、`DEBUG`、`WARN`、`ERROR`、`NONE`
-* tars.loadconfig ： 配置文件名
-* 自定义命令
-* process.msg:[all|worker_id]  ： 跨进程自定义消息对象
+* tars.setloglevel: `INFO`,` DEBUG`, `WARN`,` ERROR`, `NONE`
+* tars.loadconfig: configuration file name
+* Custom commands
+* process.msg: [all | worker_id]: Custom message object across processes
 
-\* `node-agent` 会对 `自定义命令` 进行切分，命令中第一个空格前的字符作为 `cmd`，而后续的部分则作为 `data`
+\ * `node-agent` will split the` custom command`, the characters before the first space in the command are used as `cmd`, and the subsequent parts are used as` data`
 
-### process.send(object)
+### process.send (object)
 
-发送命令给主进程以便主进程执行特定的操作。
+Send a command to the main process so that the main process performs a specific operation.
 
-传递的消息 `object` 的格式与收到的消息格式相同。
+The format of the passed message `object` is the same as the format of the received message.
 
-#### cmd = process.msg:[all|worker_id]
+#### cmd = process.msg: [all | worker_id]
 
-通过此命令，可以将自定义消息发送给参数指定的子进程。
+With this command, you can send a custom message to the child process specified by the parameter.
 
-* all ： 发送给所有子进程（包括自己）
-* worker_id ： 发送给特定的子进程，其中 worker_id 为 `进程顺序 ID` (process.env.WORKER_ID)
+* all: send to all child processes (including themselves)
+* worker_id: sent to a specific child process, where worker_id is the `process sequence ID` (process.env.WORKER_ID)
 
-__所有消息均会通过主进程中转，在大消息量下主进程易成为性能瓶颈，请谨慎使用！__
+__ All messages will be relayed through the main process. The main process is likely to become a performance bottleneck under large message volumes. Please use it with caution! __
 
-## 日志
+## Log
 
-`node-agent` 会将服务的输出（`stdout|stderr` 管道以及 `console` 模块的输出）重定向到指定的文件（当使用 `-l --log` 参数启动时）或者管道。
+`node-agent` redirects the output of the service (the output of the` stdout | stderr` pipe and the `console` module) to the specified file (when started with the` -l --log` parameter) or pipe.
 
-日志的输出由 [winston-tars](https://github.com/tars-node/winston-tars "winston-tars") 模块实现，其输出的日志格式为：`日期 时间|PID|日志级别|文件名:行号|内容`
+The log output is implemented by the [winston-tars] (https://github.com/tars-node/winston-tars "winston-tars") module, and the output log format is: `datetime | PID | log level | File name: line number | content`
 
-服务脚本可以通过 `node` 自带的 `console` 模块输出不同级别的日志。
+The service script can output logs of different levels through the `console` module that comes with` node`.
 
-> console.info = INFO  
-> console.log = DEBUG  
-> console.warn = WARN  
-> console.error = ERROR
+console.info = INFO
+console.log = DEBUG
+console.warn = WARN
+console.error = ERROR
 
-也可通过服务的 `stdout|stderr` 管道输出。
+It can also be output through the service's `stdout | stderr` pipe.
 
-> process.stdout = INFO  
+> process.stdout = INFO
 > process.stderr = ERROR
 
-日志级别的优先级为： `INFO` < `DEBUG` < `WARN` < `ERROR` < `NONE`
+The priority of the log level is: `INFO` <` DEBUG` <`WARN` <` ERROR` <`NONE`
 
-其中，默认的日志级别为：`DEBUG`
+Among them, the default log level is: `DEBUG`
 
-## 环境变量
+## Environment variables
 
-`node-agent` 通过环境变量向服务脚本提供所需的变量：
+`node-agent` provides the required variables to the service script via environment variables:
 
-* `process.env.IP`：HTTP(s) 可监听的 IP。
-* `process.env.PORT`：HTTP(s) 可监听的端口。
-* `process.env.WORKER_ID` 进程顺序 ID（例如启动 8 个进程，第一个为0，第二个为1，以此类推），重新启动的进程仍然使用之前的 ID。
+* `process.env.IP`: The IP that HTTP (s) can listen on.
+* `process.env.PORT`: HTTP (s) listenable port.
+* `process.env.WORKER_ID` Process sequence ID (for example, start 8 processes, the first is 0, the second is 1, and so on), the restarted process still uses the previous ID.
 
-如服务是由 `tarsnode` 启动的，还支持如下变量：
+If the service is started by `tarsnode`, the following variables are also supported:
 
-* `process.env.TARS_CONFIG`：启动服务所使用的TARS配置文件所在的绝对路径。  
-* `process.env.TARS_MONITOR`：是否开启监控（特性）上报（统计）。
+* `process.env.TARS_CONFIG`: The absolute path where the TARS configuration file used to start the service is located.
+* `process.env.TARS_MONITOR`: Whether to enable monitoring (characteristic) reporting (statistics).
 
-__请注意：环境变量全为 String 类型__
+__Please note: all environment variables are of type String__
 
-## 监控与用量上报
+## Monitoring and reporting
 
-如果您的服务是在 `TARS` 平台上运行的，`node-agent` 会自动向 `tarsstat` 上报服务的监控（用量）信息。
+If your service is running on the `TARS` platform,` node-agent` will automatically report service monitoring (usage) information to `tarsstat`.
 
-### 监控信息
+### Monitoring information
 
-监控信息的上报与您启动的服务及其调用者有关（可通过 `TARS平台 -> 服务监控` 查看）：
+The reporting of monitoring information is related to the service you started and its caller (can be viewed through `TARS Platform-> Service Monitoring`):
 
-* HTTP(s)
-	* 服务端：[response.statusCode >= 400](http://www.nodejs.org/api/http.html#http_response_statuscode) 为失败，所有请求的超时为 0
-		* 可通过 [--tars-monitor-http-threshold](#tars-monitor-http-threshold) 与 [--tars-monitor-http-seppath](#tars-monitor-http-seppath) 进行配置
+* HTTP (s)
+* Server: [response.statusCode> = 400] (http://www.nodejs.org/api/http.html#http_response_statuscode) failed, and the timeout of all requests is 0
+* Configurable via [--tars-monitor-http-threshold] (# tars-monitor-http-threshold) and [--tars-monitor-http-seppath] (# tars-monitor-http-seppath)
 
-更多详情您可访问 [@tars/monitor.stat](https://github.com/tars-node/monitor) 获取。
+For more details, please visit [@ tars / monitor.stat] (https://github.com/tars-node/monitor).
 
-### 用量信息
+### Dosage Information
 
-无论您启动的服务是什么类型，用量信息总是上报（可通过 `TARS平台 -> 特性监控` 查看）：
+No matter what type of service you start, the usage information is always reported (can be viewed via `TARS Platform-> Feature Monitoring`):
 
-* memoryUsage: 内存用量，将会上报 `rss`、`heapUsed`、`heapTotal` 这三个用量（单位为字节）
-* cpuUsage: CPU用量，将会上报CPU使用率，数据汇总为逻辑单核（单位为百分比）
-* eventloopLag: 事件循环滞后（V8消息队列延迟），每隔2秒采样（单位为毫秒）
-* libuv: I/O用量，将会上报 `activeHandles`、`activeRequests` 这两个用量
+* memoryUsage: memory usage, which will be reported as `rss`,` heapUsed`, and `heapTotal` (in bytes)
+* cpuUsage: CPU usage, CPU usage will be reported, and data will be aggregated into logical single cores (unit is percentage)
+* eventloopLag: Event loop lag (V8 message queue delay), sample every 2 seconds (unit is millisecond)
+* libuv: I / O usage, will report the usage of `activeHandles` and` activeRequests`
 
-所有的用量信息的统计策略均为 `Avg`、`Max`、`Min`
+The statistical strategy of all usage information is `Avg`,` Max`, `Min`
 
-## 无损操作
+## Nondestructive operation
 
-如果您的服务是在 `TARS` 平台上运行的，每次无损重启或发布时：
+If your service is running on the `TARS` platform, every time a non-destructive restart or release:
 
-1. 设置流量状态为无流量（包括路由和第三方流量）
-2. 等待调用方获取配置（默认为 2分13秒）
-3. 执行对应操作（重启或发布）
-4. 恢复流量状态
+1. Set the traffic status to no traffic (including routing and third-party traffic)
+2. Wait for the caller to get the configuration (default is 2 minutes 13 seconds)
+3. Perform the corresponding operation (restart or release)
+4. Restore traffic status
 
-__请注意：如果大量节点同时进行无损操作，会同时屏蔽这些节点的流量，可能会造成服务不稳定。建议采用无损分批重启。__
+__Please note: If a large number of nodes perform non-destructive operations at the same time, the traffic of these nodes will be blocked at the same time, which may cause service instability. A non-destructive batch restart is recommended. __
 
-### 预热
+### Warm up
 
-在无损操作的服务启动过程中，可以选择是否需要进行预热：
+During the service startup of non-destructive operation, you can choose whether to warm up:
 
-1. 服务启动后每秒检查是否所有子进程都监听了端口（所有子进程状态均为 ONLINE）
-2. 如果超过预热超时时间，且并非所有子进程都监听了端口，则无损操作流程失败并通知用户（邮件通知）
+1. After the service is started, check if all child processes are listening on the port every second (all child processes are ONLINE)
+2. If the warm-up timeout period is exceeded and not all child processes are listening on the port, the non-destructive operation process fails and the user is notified (email notification)
 
-__我们强烈建议您：在任何情况下，请完成所有初始化操作后再监听(listen)端口。__
+__We strongly recommend that: In any case, please complete all initialization operations before listening to the (listen) port. __
 
-## 架构
+## Architecture
 
-![PM2](https://github.com/tars-node/node-agent/blob/master/doc/architecture.png?raw=true)
+! [PM2] (https://github.com/tars-node/node-agent/blob/master/doc/architecture.png?raw=true)
 
-`node-agent` 在启动（也就是执行 `cluster.fork`）服务脚本时，并不会直接载入对应脚本，而是载入 `node-agent/ProcessContainer.js` 来对服务脚本进行包装，之后再调用系统的 `require` 载入执行脚本
+When `node-agent` starts (that is, executes` cluster.fork`) service script, it does not directly load the corresponding script, but loads `node-agent / ProcessContainer.js` to wrap the service script. Then call the system's `require` to load the execution script
