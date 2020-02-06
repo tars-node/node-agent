@@ -4,16 +4,16 @@ In order for Node.js applications to run in the TARS framework, `node-agent` wil
 
 It mainly provides the following functions:
 
-* __Built-in load balancing (implemented through the Cluster module) __
+* __Built-in load balancing (implemented through the Cluster module)__
 * __Monitoring and Pulling of Abnormal Exit__
 * __Log collection and processing__
 * __Supports management commands for the TARS platform__
-* __Support HTTP (s) service monitoring and reporting (running on TARS platform) __
-* __Support service usage report (run on TARS platform) __
+* __Support HTTP (s) service monitoring and reporting (running on TARS platform)__
+* __Support service usage report (run on TARS platform__
 
 ## Installation
 
-`npm install @ tars / node-agent -g`
+`npm install @ tars/node-agent -g`
 
 > Since `node-agent` is a CLI program, it usually needs to be installed with the __- g__ parameter
 
@@ -21,36 +21,36 @@ It mainly provides the following functions:
 
 `node-agent app.js [options]`
 
-* app.js is the entry script for the program, see [entry point] (# entrypoint) for details
-* [options] Optional configuration, see [Options] (# options) section
+* app.js is the entry script for the program, see [entry point](#entrypoint) for details
+* [options] Optional configuration, see [Options](#options) section
 
 ## Examples
 
-Execute the app.js file:
-$ node-agent app.js
+Execute the app.js file:  
+> $ node-agent app.js
 
 Start with the configuration file for the `TARS` service:
-$ node-agent app.js --config MTT.Test.conf
+> $ node-agent app.js --config MTT.Test.conf
 
 Launch and name the app MTT.Test:
-$ node-agent app.js --name MTT.Test
+> $ node-agent app.js --name MTT.Test
 
 Define log output path
-$ node-agent app.js --log ./logs/
+> $ node-agent app.js --log ./logs/
 
 Pass the startup parameters of the child node `node`:
 > $ node-agent app.js --node-args = "-debug = 7001"
 
 Define the number of child processes:
-$ node-agent app.js -i 4
+> $ node-agent app.js -i 4
 
 ## Entry point
 
 The second parameter passed when `node-agent` starts is used to specify the entry point file for service script execution, where:
 
- * Can be directly passed into the script file for execution, such as `. / App.js`
+ * Can be directly passed into the script file for execution, such as `./App.js`
 
- * You can also pass in the directory where the script file is located, such as `. /`
+ * You can also pass in the directory where the script file is located, such as `./`
 
 When a directory is passed in, the entry point is confirmed in the following order:
 
@@ -66,7 +66,6 @@ As long as one of these matches is executed as an entry point file, no further m
 
 
 > Options:
-
 >   -h, --help                                     output usage information  
 >   -V, --version                                  output the version number  
 >   -c, --config <config>                          specify tars config file. NOTE: independent config will be override this  
@@ -117,15 +116,15 @@ If not configured, all log output is _stdout / stderr_ output
 
 ### -i, --instances
 
-`node-agent` uses Node.js' native [Cluster] (http://www.nodejs.org/api/cluster.html" Cluster ") module to implement load balancing.
+`node-agent` uses Node.js'native [Cluster](http://www.nodejs.org/api/cluster.html "Cluster") module to implement load balancing.
 
 The number of child processes (business processes) started by `node-agent` can be configured here:
 
-* Not configured (or configured as `auto`,` 0`), the number of child processes started is equal to the `CPU physical core` number.
+* Not configured (or configured as `auto`,`0`), the number of child processes started is equal to the `CPU physical core` number.
 
 * Configured as `max`, the number of child processes started equals the number of CPUs (all cores).
 
-If `node-agent` is started by` tarsnode`, the `tars.application.client.asyncthread` configuration section in the TARS configuration file is automatically read.
+If `node-agent` is started by`tarsnode`, the `tars.application.client.asyncthread` configuration section in the TARS configuration file is automatically read.
 
 It can also be adjusted via `TARS Platform-> Edit Services-> Number of Asynchronous Threads`.
 
@@ -135,11 +134,11 @@ Set the _environment variable_ when the service is started, which needs to be de
 
 For example: this configuration can be passed into the current operating environment (development, production)
 
-`` `js
+```js
 {\ "NODE_ENV \": \ "production \"}
-`` `
+```
 
-__Please note: When passed as a command line parameter, the double quotes (") need to be escaped (\") __
+__Please note: When passed as a command line parameter, the double quotes (") need to be escaped (\")__
 
 If the service is a TARS service, this parameter is read and set in a way that `tarsnode` recognizes.
 
@@ -147,12 +146,12 @@ If the service is a TARS service, this parameter is read and set in a way that `
 
 Set the ip: port required for service script execution
 
-You can use the environment variables `HTTP_IP` (` IP`), `HTTP_PORT` (` PORT`) in the script to obtain
+You can use the environment variables `HTTP_IP` (`IP`), `HTTP_PORT` (`PORT`) in the script to obtain
 
-`` `js
+```js
 process.env.HTTP_IP
 process.env.HTTP_PORT
-`` `
+```
 
 If this service is a TARS service, the value here is the `ip: port` specified in the configuration file by the first non-TARS Servant
 
@@ -194,7 +193,7 @@ If the child process reaches the maximum memory limit, it will throw an exceptio
 
 ### --graceful-shutdown
 
-Normally, `node-agent` will notify the service via` worker.disconnect () `when stopping the service (process), and let the service release resources and exit.
+Normally, `node-agent` will notify the service via` worker.disconnect() `when stopping the service (process), and let the service release resources and exit.
 
 You can set the timeout here. If the service (process) does not exit after a given time, `node-agent` will force` kill` to kill the process.
 
@@ -204,18 +203,18 @@ If `node-agent` is started by` tarsnode`, the `tars.application.server.deactivat
 
 ### --exception-max, --exception-time
 
-If the (service) child process exits abnormally, and within a period of time _ (-exception-time) _ The number of abnormal exits does not exceed the maximum value _ (-exception-max) _. `node-agent` will automatically start a new (service) child process, otherwise` node-agent` and the service will also exit abnormally.
+If the (service) child process exits abnormally, and within a period of time _(-exception-time)_ The number of abnormal exits does not exceed the maximum value _(-exception-max)_. `node-agent` will automatically start a new (service) child process, otherwise` node-agent` and the service will also exit abnormally.
 
 To facilitate third-party management tools to monitor service status
 
---exception-time default is 10s
+--exception-time default is 10s  
 --exception-max default is 2
 
 ### --keepalive-time
 
 If `node-agent` does not receive the heartbeat sent by the (service) child process within a period of time (--keepalive-time), then this (service) child process is determined to be a zombie process and will directly kill `kill` and handle it as an exception.
 
-_This logic is not triggered when the server `Free Memory` is too small. _
+_This logic is not triggered when the server `Free Memory` is too small._
 
 __If you want to (breakpoint) debug the service script, you need to set this to `--keepalive-time = off`__
 
@@ -223,7 +222,7 @@ Its default value is 5m
 
 ### --applog-max-files, --applog-max-size, --applog-level
 
-Specify the service's default rolling log size _ (-applog-max-size) _, total _ (-applog-max-files) _ and log level _ (-applog-level) _.
+Specify the service's default rolling log size _(-applog-max-size)_, total _(-applog-max-files)_ and log level _(-applog-level)_.
 
 Two main (rolling) logs are created when the service starts:
 
@@ -232,15 +231,15 @@ Two main (rolling) logs are created when the service starts:
 
 This configuration mainly affects the output parameters of the above two main (rolling) logs
 
-See [logs] (# logs "logs") for details
+See [logs](#logs "logs") for details
 
 ### --tars-node, --tars-local
 
-If `node-agent` is started by` tarsnode`, you need to specify the RPC connection parameter _ (-tars-node) _ of tarsnode and the startup parameter _ (-tars-local) _ which is called locally.
+If `node-agent` is started by` tarsnode`, you need to specify the RPC connection parameter _(-tars-node)_ of tarsnode and the startup parameter _(-tars-local)_ which is called locally.
 
-This setting can also be specified via the TARS configuration file _ (-tars-config) _.
+This setting can also be specified via the TARS configuration file _(-tars-config)_.
 
-`node-agent` will report the service version to` tarsnode` when the service is started, and send heartbeat packets during the service running.
+`node-agent` will report the service version to`tarsnode` when the service is started, and send heartbeat packets during the service running.
 
 At the same time, the (started) service started locally by `node-agent` will also receive the issued messages (shutdown / message) from` tarsnode` and respond.
 
@@ -254,9 +253,9 @@ For details, please refer to the “Monitoring and Usage Reporting” section.
 
 ### --tars-monitor-http-threshold
 
-If your service's HTTP (s) return code is greater than this threshold, the request will be reported as an abnormal access.
+If your service's HTTP(s) return code is greater than this threshold, the request will be reported as an abnormal access.
 
-By default [response.statusCode> = 400] (http://www.nodejs.org/api/http.html#http_response_statuscode) is abnormal access.
+By default [response.statusCode> = 400](http://www.nodejs.org/api/http.html#http_response_statuscode) is abnormal access.
 
 Set to off to turn this feature off.
 
@@ -274,7 +273,7 @@ For details, please refer to the “Monitoring and Usage Reporting” section.
 
 ### --tars-monitor-http-socketerr
 
-By default, the HTTP (s) service accesses [Socket Exception] (https://nodejs.org/api/errors.html#errors_common_system_errors) as an exception when reporting.
+By default, the HTTP (s) service accesses [Socket Exception](https://nodejs.org/api/errors.html#errors_common_system_errors) as an exception when reporting.
 
 If you want to turn this feature off, you can set it to off
 
@@ -286,9 +285,9 @@ If you want to filter out the stack generated by user code (module), you can ena
 
 This feature requires a Node.js version greater than v8.2.x
 
-__This feature will cause performance loss. Do not enable performance sensitive code. __
+__This feature will cause performance loss. Do not enable performance sensitive code.__
 
-For details, please see the [LongStack] (https://www.npmjs.com/package/longstack) description.
+For details, please see the [LongStack](https://www.npmjs.com/package/longstack) description.
 
 ## Configuration
 
@@ -307,19 +306,19 @@ among them:
 For example (start the child process as nobody):
 
 Command line parameters:
-node-agent app.js --run-as-user = nobody
+> node-agent app.js --run-as-user = nobody
 
 package.json:
-`` `js
-> {
-> "nodeAgent": {
-> "runAsUser": "nobody"
->}
->}
-> `` `
+>``` js
+>{  
+>  "nodeAgent" : {  
+>    "runAsUser" : "nobody"  
+>  }  
+>} 
+>```
 
 TARS configuration file:
-`` `xml
+>```xml
 > <tars>
 > <application>
 > <server>
@@ -327,7 +326,7 @@ TARS configuration file:
 > </ server>
 > </ application>
 > </ tars>
-> `` `
+> ```
 
 ## Messages and events
 
@@ -335,11 +334,11 @@ In general, user code does not need to process (follow) process messages and eve
 
 ### process.on ('disconnect', function)
 
-For specific description of this event, please refer to [Cluster Event: 'disconnect'] (http://www.nodejs.org/api/cluster.html#cluster_event_disconnect)
+For specific description of this event, please refer to [Cluster Event: 'disconnect'](http://www.nodejs.org/api/cluster.html#cluster_event_disconnect)
 
-By default `node-agent` will process this event, but if user code listens (handles) the event,` node-agent` will no longer process it.
+By default `node-agent` will process this event, but if user code listens (handles) the event,`node-agent` will no longer process it.
 
-__Please note: After you process the event, please be sure to call `process.exit ()` to ensure that the process can exit normally__
+__Please note: After you process the event, please be sure to call `process.exit()` to ensure that the process can exit normally__
 
 ### process.on ('message', object)
 
@@ -347,12 +346,12 @@ Once `node-agent` receives the management command from` tarsnode`, it will send 
 
 The format of the passed message `object` is:
 
-`` `js
+```js
 {
   cmd: String,
   data: String
 }
-`` `
+```
 
 Supported messages `cmd` are:
 
@@ -369,7 +368,7 @@ Supported messages `cmd` are:
 * Custom commands
 * process.msg: [all | worker_id]: Custom message object across processes
 
-\ * `node-agent` will split the` custom command`, the characters before the first space in the command are used as `cmd`, and the subsequent parts are used as` data`
+\* `node-agent` will split the` custom command`, the characters before the first space in the command are used as `cmd`, and the subsequent parts are used as` data`
 
 ### process.send (object)
 
@@ -384,13 +383,13 @@ With this command, you can send a custom message to the child process specified 
 * all: send to all child processes (including themselves)
 * worker_id: sent to a specific child process, where worker_id is the `process sequence ID` (process.env.WORKER_ID)
 
-__ All messages will be relayed through the main process. The main process is likely to become a performance bottleneck under large message volumes. Please use it with caution! __
+__ All messages will be relayed through the main process. The main process is likely to become a performance bottleneck under large message volumes. Please use it with caution!__
 
 ## Log
 
 `node-agent` redirects the output of the service (the output of the` stdout | stderr` pipe and the `console` module) to the specified file (when started with the` -l --log` parameter) or pipe.
 
-The log output is implemented by the [winston-tars] (https://github.com/tars-node/winston-tars "winston-tars") module, and the output log format is: `datetime | PID | log level | File name: line number | content`
+The log output is implemented by the [winston-tars](https://github.com/tars-node/winston-tars "winston-tars") module, and the output log format is: `datetime | PID | log level | File name: line number | content`
 
 The service script can output logs of different levels through the `console` module that comes with` node`.
 
@@ -432,10 +431,10 @@ If your service is running on the `TARS` platform,` node-agent` will automatical
 The reporting of monitoring information is related to the service you started and its caller (can be viewed through `TARS Platform-> Service Monitoring`):
 
 * HTTP (s)
-* Server: [response.statusCode> = 400] (http://www.nodejs.org/api/http.html#http_response_statuscode) failed, and the timeout of all requests is 0
-* Configurable via [--tars-monitor-http-threshold] (# tars-monitor-http-threshold) and [--tars-monitor-http-seppath] (# tars-monitor-http-seppath)
+* Server: [response.statusCode> = 400](http://www.nodejs.org/api/http.html#http_response_statuscode) failed, and the timeout of all requests is 0
+* Configurable via [--tars-monitor-http-threshold](# tars-monitor-http-threshold) and [--tars-monitor-http-seppath](# tars-monitor-http-seppath)
 
-For more details, please visit [@ tars / monitor.stat] (https://github.com/tars-node/monitor).
+For more details, please visit [@ tars / monitor.stat](https://github.com/tars-node/monitor).
 
 ### Dosage Information
 
@@ -457,7 +456,7 @@ If your service is running on the `TARS` platform, every time a non-destructive 
 3. Perform the corresponding operation (restart or release)
 4. Restore traffic status
 
-__Please note: If a large number of nodes perform non-destructive operations at the same time, the traffic of these nodes will be blocked at the same time, which may cause service instability. A non-destructive batch restart is recommended. __
+__Please note: If a large number of nodes perform non-destructive operations at the same time, the traffic of these nodes will be blocked at the same time, which may cause service instability. A non-destructive batch restart is recommended.__
 
 ### Warm up
 
@@ -466,10 +465,10 @@ During the service startup of non-destructive operation, you can choose whether 
 1. After the service is started, check if all child processes are listening on the port every second (all child processes are ONLINE)
 2. If the warm-up timeout period is exceeded and not all child processes are listening on the port, the non-destructive operation process fails and the user is notified (email notification)
 
-__We strongly recommend that: In any case, please complete all initialization operations before listening to the (listen) port. __
+__We strongly recommend that: In any case, please complete all initialization operations before listening to the (listen) port.__
 
 ## Architecture
 
-! [PM2] (https://github.com/tars-node/node-agent/blob/master/doc/architecture.png?raw=true)
+![PM2](https://github.com/tars-node/node-agent/blob/master/doc/architecture.png?raw=true)
 
 When `node-agent` starts (that is, executes` cluster.fork`) service script, it does not directly load the corresponding script, but loads `node-agent / ProcessContainer.js` to wrap the service script. Then call the system's `require` to load the execution script
