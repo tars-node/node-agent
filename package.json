@@ -1,7 +1,7 @@
 {
   "name": "@tars/node-agent",
   "preferGlobal": "true",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "TARS 框架中 Node.js 程序启动器，提供生产环境所需的服务特性",
   "author": {
     "name": "Superzheng",

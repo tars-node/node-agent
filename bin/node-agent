@@ -301,6 +301,7 @@ if (!existsSync(entrypoint)) {
 
 if (commander.config) {
 	try {
+		process.env.TARS_CONFIG = commander.config
 		configOpt = parseConfig(commander.args[0], commander.config);
 	} catch(e) {
 		error(chalk.red('>> Reading the config file failed.'));
