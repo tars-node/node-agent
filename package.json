@@ -1,7 +1,7 @@
 {
   "name": "@tars/node-agent",
   "preferGlobal": "true",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "TARS Framework Node.js Launcher",
   "author": {
     "name": "ruanshudong",
