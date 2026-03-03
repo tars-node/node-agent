@@ -267,9 +267,27 @@ if (scriptStat.isFile() && path.extname(commander.args[0]).toLowerCase() === '.j
 
 		if (scriptPkg && scriptPkg.nodeAgent && scriptPkg.nodeAgent.main) {
 			entrypoint = path.resolve(commander.args[0], scriptPkg.nodeAgent.main);
-		} else if (scriptPkg && scriptPkg.scripts && scriptPkg.scripts.start && scriptPkg.scripts.start.indexOf('node ') === 0) {
-			entrypoint = path.resolve(commander.args[0], scriptPkg.scripts.start.slice(5));
-		} else if (scriptPkg && scriptPkg.main) {
+		} else if (scriptPkg && scriptPkg.scripts && scriptPkg.scripts.start) {
+			var startCmd = scriptPkg.scripts.start;
+			// Simple heuristic: if it starts with "node " and has no shell operators, treat as legacy file mode
+			// Otherwise, use new Shell Mode
+			var isSimpleNode = startCmd.trim().indexOf('node ') === 0 && !/[&|;]|\$\{/.test(startCmd);
+			
+			if (isSimpleNode) {
+				var args = startCmd.split(' ');
+				entrypoint = path.resolve(commander.args[0], args[1]);
+				if (args.length > 2) {
+					commander.scriptArgs = args.slice(2);
+				}
+			} else {
+				// Shell Mode
+				entrypoint = startCmd; 
+				commander.executionMode = 'shell';
+                commander.projectRoot = path.resolve(commander.args[0]);
+			}
+		} 
+		
+		if (!entrypoint && scriptPkg && scriptPkg.main) {
 			entrypoint = path.resolve(commander.args[0], scriptPkg.main);
 		}
 	}
@@ -294,7 +312,7 @@ if (scriptStat.isFile() && path.extname(commander.args[0]).toLowerCase() === '.j
 	return;
 }
 
-if (!existsSync(entrypoint)) {
+if (commander.executionMode !== 'shell' && !existsSync(entrypoint)) {
 	error(util.format('>> Can NOT find the entrypoint(%s) in the file system', entrypoint));
 	return;
 }
@@ -307,10 +325,14 @@ if (commander.config) {
 		error(chalk.red('>> Reading the config file failed.'));
 		return;
 	}
-} else if (existsSync(path.join(path.dirname(entrypoint), 'package.json'))) {
+} else if (commander.executionMode !== 'shell' && existsSync(path.join(path.dirname(entrypoint), 'package.json'))) {
 	try {
 		configOpt = parsePackage(path.join(path.dirname(entrypoint), 'package.json'));
 	} catch(e) {}
+} else if (commander.executionMode === 'shell' && existsSync(path.join(commander.args[0], 'package.json'))) {
+    try {
+        configOpt = parsePackage(path.join(commander.args[0], 'package.json'));
+    } catch(e) {}
 }
 
 if (configOpt) {
