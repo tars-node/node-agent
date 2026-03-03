@@ -42,5 +42,8 @@
   "bin": {
     "node-agent": "./bin/node-agent"
   },
+  "scripts": {
+    "test": "node test/process-container-shutdown.test.js"
+  },
   "license" : "BSD-3-Clause"
 }
