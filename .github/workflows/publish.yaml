@@ -1,0 +1,21 @@
+name: 发布 NPM 包
+
+on:
+  push:
+    tags:
+      - 'v*' # 匹配所有以v开头的tag
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      - name: 配置 NPM 认证
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NODE_AUTH_TOKEN }}
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
